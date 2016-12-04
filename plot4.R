@@ -1,7 +1,18 @@
-# Load the data using read.table into a variable named 'data'
+fileName <- "household_power_consumption.txt"
+
+#Download file if we don't already have it.
+if(!file.exists(fileName)) {
+  print("Downloading data...")
+  zipFileName <- "household_power_consumption.zip"
+  download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", destfile = zipFileName, method = "curl")
+  unzip(zipFileName)
+}
+
+# Load the data using read.table
 print("Loading data...")
-consumptionData <- read.table("household_power_consumption.txt", header = TRUE, 
+consumptionData <- read.table(fileName, header = TRUE, 
                               sep = ";", na.strings = "?")
+
 
 #Convert date strings to actual date objects
 print("Converting dates and times to DataTime objects...")
@@ -16,7 +27,7 @@ consumptionData$datetime <- strptime(paste(consumptionData$Date, consumptionData
 
 #Build the graph
 print("Building graph...")
-png("plot4.png")
+png("plot4.png", height = 480, width = 480)
 par(mfcol = c(2,2), cex = .8)
 
 print("Create plot 1...")
